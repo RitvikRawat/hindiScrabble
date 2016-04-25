@@ -13,6 +13,10 @@ public class Recall: MonoBehaviour {
 	void Update () {
 	
 	}
+	public void staticWrapper()
+	{
+		recall ();
+	}
 	public static void recall()
 	{
 		Debug.Log ("recall");
