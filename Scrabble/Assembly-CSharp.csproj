@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\LangChngREV.cs" />
      <Compile Include="Assets\Scripts\Matching.cs" />
      <Compile Include="Assets\Scripts\Matrix.cs" />
+     <Compile Include="Assets\Scripts\Penalty.cs" />
      <Compile Include="Assets\Scripts\Point.cs" />
      <Compile Include="Assets\Scripts\Quit.cs" />
      <Compile Include="Assets\Scripts\Recall.cs" />
