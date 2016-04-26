@@ -19,7 +19,7 @@ public class AI : MonoBehaviour {
 	public GameObject Chancescript,bankscript;
 	public List<int> anchored;
 	public int anx,any;
-	public int uni;
+	public int uni,faltu;
 	public int lt,rt,up,dn;
 	public int x, c = 0;
 	public int placedir = 0;
@@ -33,7 +33,6 @@ public class AI : MonoBehaviour {
 			c = c + 1;
 			Debug.Log (pr[i]);
 		}
-		//Debug.Log ("");
 	}
 
 	public void printmatrix(string[,] board){
@@ -116,6 +115,10 @@ public class AI : MonoBehaviour {
 					}
 				}
 				valid = Dictionary.Search(tosearch);
+				for(int i=1;i<tosearch.Count;i++){
+					if(tosearch[i-1]>=2366 && tosearch[i]<2325)
+						valid = 0;
+				}
 				if(valid == 1){
 					if(dir == 1 || dir == 2){
 						up = y;
@@ -215,6 +218,7 @@ public class AI : MonoBehaviour {
 					templist.Add(x);
 					templist.Add(y);
 					templist.Add(dir);
+					//printlist(templist,templist.Count);
 					if(!((dir == 1 || dir == 3) && per[0]<2325))
 						listlist.Add(templist);
 				}
@@ -236,11 +240,14 @@ public class AI : MonoBehaviour {
 							if(placekrna[i]>=2325){
 								Onrack[j].transform.position = new Vector3(templachere.position.x + (blocks * (2 * Board.sizeTile)), templachere.position.y, 0);
 								Onrack[j].GetComponent<place>().onboard = true;
+								Onrack[j].GetComponent<place>().placed = true;
 								Board.unicode[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().Unicode;
 								Board.matrix[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().pt;
+								Debug.Log(Board.unicode[anx + blocks,any]);
 							}
 							else{
 								Onrack[j].GetComponent<place>().onboard = true;
+								Onrack[j].GetComponent<place>().placed = true;
 								//Onrack[j].transform.position = new Vector3(0,0,-5);
 								uni = int.Parse(Onrack[j].GetComponentInChildren<Point>().Unicode);
 								uni = (uni % 100) - 6;
@@ -248,8 +255,10 @@ public class AI : MonoBehaviour {
 								Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
 								if(Onbrd.Count != 0){
 									tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
-									Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+									Onbrd[Onbrd.Count-1].transform.position = new Vector3(100,100,5);
 									Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+									Debug.Log(Board.unicode[anx + blocks,any]);
+									Onrack[j].transform.position = new Vector3(100,120,5);
 								}else
 									Onrack[j].transform.position = tempos;
 							}
@@ -257,21 +266,26 @@ public class AI : MonoBehaviour {
 						else if(dir == 3 || dir == 4){
 							if(placekrna[i]>=2325){
 								Onrack[j].transform.position = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
+								Onrack[j].GetComponent<place>().placed = true;
 								Onrack[j].GetComponent<place>().onboard = true;
 								Board.unicode[anx,any+blocks] = Onrack[j].GetComponentInChildren<Point>().Unicode;
 								Board.matrix[anx,any + blocks] = Onrack[j].GetComponentInChildren<Point>().pt;
+								Debug.Log(Board.unicode[anx,any + blocks]);
 							}
 							else{
 								Onrack[j].GetComponent<place>().onboard = true;
+								Onrack[j].GetComponent<place>().placed = true;
 								//Onrack[j].transform.position = new Vector3(0,0,-5);
 								uni = int.Parse(Onrack[j].GetComponentInChildren<Point>().Unicode);
 								uni = (uni % 100) - 6;
 								tempos = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
-								Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+								Board.matrix[anx,any + blocks] += Onrack[j].GetComponentInChildren<Point>().pt;
 								if(Onbrd.Count != 0){
 									tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
-									Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
-									Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+									Onbrd[Onbrd.Count-1].transform.position = new Vector3(100,100,5);
+									Board.unicode[anx,any + blocks] = tempvyan.GetComponentInChildren<Point>().Unicode;
+									Debug.Log(Board.unicode[anx,any + blocks]);
+									Onrack[j].transform.position = new Vector3(100,120,5);
 								}else
 									Onrack[j].transform.position = tempos;
 							}
@@ -288,6 +302,7 @@ public class AI : MonoBehaviour {
 							blocks--;
 						if(dir == 1 || dir == 2){
 							Onrack[j].GetComponent<place>().onboard = true;
+							Onrack[j].GetComponent<place>().placed = true;
 							//Onrack[j].transform.position = new Vector3(0,0,-5);
 							uni = 2306;
 							uni = (uni % 100) - 6;
@@ -295,22 +310,27 @@ public class AI : MonoBehaviour {
 							Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
 							if(Onbrd.Count != 0){
 								tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
-								Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+								Onbrd[Onbrd.Count-1].transform.position = new Vector3(100,100,5);
 								Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+								Debug.Log(Board.unicode[anx + blocks,any]);
+								Onrack[j].transform.position = new Vector3(100,120,5);
 							}else
 								Onrack[j].transform.position = tempos;
 						}
 						else if(dir == 3 || dir == 4){
 							Onrack[j].GetComponent<place>().onboard = true;
+							Onrack[j].GetComponent<place>().placed = true;
 							//Onrack[j].transform.position = new Vector3(0,0,-5);
 							uni = 2306;
 							uni = (uni % 100) - 6;
 							tempos = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
-							Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+							Board.matrix[anx,any + blocks] += Onrack[j].GetComponentInChildren<Point>().pt;
 							if(Onbrd.Count != 0){
 								tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
-								Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
-								Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+								Onbrd[Onbrd.Count-1].transform.position = new Vector3(100,100,5);
+								Board.unicode[anx,any + blocks] = tempvyan.GetComponentInChildren<Point>().Unicode;
+								Debug.Log(Board.unicode[anx,any + blocks]);
+								Onrack[j].transform.position = new Vector3(100,120,5);
 							}else
 								Onrack[j].transform.position = tempos;
 						}
@@ -325,6 +345,7 @@ public class AI : MonoBehaviour {
 							blocks--;
 						if(dir == 1 || dir == 2){
 							Onrack[j].GetComponent<place>().onboard = true;
+							Onrack[j].GetComponent<place>().placed = true;
 							//Onrack[j].transform.position = new Vector3(0,0,-5);
 							uni = 2307;
 							uni = (uni % 100) - 6;
@@ -332,22 +353,27 @@ public class AI : MonoBehaviour {
 							Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
 							if(Onbrd.Count != 0){
 								tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
-								Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+								Onbrd[Onbrd.Count-1].transform.position = new Vector3(100,100,5);
 								Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+								Debug.Log(Board.unicode[anx + blocks,any]);
+								Onrack[j].transform.position = new Vector3(100,120,5);
 							}else
 								Onrack[j].transform.position = tempos;
 						}
 						else if(dir == 3 || dir == 4){
 							Onrack[j].GetComponent<place>().onboard = true;
+							Onrack[j].GetComponent<place>().placed = true;
 							//Onrack[j].transform.position = new Vector3(0,0,-5);
 							uni = 2307;
 							uni = (uni % 100) - 6;
 							tempos = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
-							Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+							Board.matrix[anx,any + blocks] += Onrack[j].GetComponentInChildren<Point>().pt;
 							if(Onbrd.Count != 0){
 								tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
-								Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
-								Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+								Onbrd[Onbrd.Count-1].transform.position = new Vector3(100,100,5);
+								Board.unicode[anx,any + blocks] = tempvyan.GetComponentInChildren<Point>().Unicode;
+								Debug.Log(Board.unicode[anx,any + blocks]);
+								Onrack[j].transform.position = new Vector3(100,120,5);
 							}else
 								Onrack[j].transform.position = tempos;
 						}
@@ -363,8 +389,16 @@ public class AI : MonoBehaviour {
 	void anchoringright(string[,] board){
 		for (int i=0; i<15; i++) {
 			for (int j=0;j<16;j++){
-				if(int.Parse(board[i,j]) > 1000 && int.Parse(board[i+1,j]) < 1000){
-					board[i+1,j] = "1";
+				if(int.TryParse(board[i,j], out faltu) && int.TryParse(board[i+1,j], out faltu)){
+					if(int.Parse(board[i,j]) > 1000 && int.Parse(board[i+1,j]) < 1000){
+						board[i+1,j] = "1";
+					}
+				}
+				else{
+					if(int.TryParse(board[i+1,j], out faltu)){
+						if(int.Parse(board[i+1,j]) < 1000)
+							board[i+1,j] = "1";
+					}
 				}
 			}
 		}
@@ -373,8 +407,16 @@ public class AI : MonoBehaviour {
 	void anchoringleft(string[,] board){
 		for (int i=1; i<16; i++) {
 			for (int j=0;j<16;j++){
-				if(int.Parse(board[i,j]) > 1000 && int.Parse(board[i-1,j]) < 1000){
-					board[i-1,j] = "2";
+				if(int.TryParse(board[i,j], out faltu) && int.TryParse(board[i-1,j], out faltu)){
+					if(int.Parse(board[i,j]) > 1000 && int.Parse(board[i-1,j]) < 1000){
+						board[i-1,j] = "2";
+					}
+				}
+				else{
+					if(int.TryParse(board[i-1,j], out faltu)){
+						if(int.Parse(board[i-1,j]) < 1000)
+							board[i-1,j] = "2";
+					}
 				}
 			}
 		}
@@ -383,8 +425,16 @@ public class AI : MonoBehaviour {
 	void anchoringdown(string[,] board){
 		for (int i=0; i<16; i++) {
 			for (int j=0;j<15;j++){
-				if(int.Parse(board[i,j]) > 1000 && int.Parse(board[i,j+1]) < 1000){
-					board[i,j+1] = "3";
+				if(int.TryParse(board[i,j], out faltu) && int.TryParse(board[i,j+1], out faltu)){
+					if(int.Parse(board[i,j]) > 1000 && int.Parse(board[i,j+1]) < 1000){
+						board[i,j+1] = "3";
+					}
+				}
+				else{
+					if(int.TryParse(board[i,j+1], out faltu)){
+						if(int.Parse(board[i,j+1]) < 1000)
+							board[i,j+1] = "3";
+					}
 				}
 			}
 		}
@@ -393,8 +443,16 @@ public class AI : MonoBehaviour {
 	void anchoringup(string[,] board){
 		for (int i=0; i<16; i++) {
 			for (int j=1;j<16;j++){
-				if(int.Parse(board[i,j]) > 1000 && int.Parse(board[i,j-1]) < 1000){
-					board[i,j-1] = "4";
+				if(int.TryParse(board[i,j], out faltu) && int.TryParse(board[i,j-1], out faltu)){
+					if(int.Parse(board[i,j]) > 1000 && int.Parse(board[i,j-1]) < 1000){
+						board[i,j-1] = "4";
+					}
+				}
+				else{
+					if(int.TryParse(board[i,j-1], out faltu)){
+						if(int.Parse(board[i,j-1]) < 1000)
+							board[i,j-1] = "4";
+					}
 				}
 			}
 		}
@@ -426,7 +484,6 @@ public class AI : MonoBehaviour {
 			words = "5";
 			for(int i=0;i<8;i++){
 				words = words + " " + Onrack[i].GetComponentInChildren<Point>().Unicode;
-				//Debug.Log(words);
 			}
 			wor = new List<string> ();
 			possible = new List<int> ();
@@ -450,11 +507,29 @@ public class AI : MonoBehaviour {
 					if(Board.unicode[l,k] == "1"){
 						anchored.Clear();
 						for(int m=1;m<4;m++){
-							//Debug.Log(Board.unicode[l-m,k]);
-							if(int.Parse (Board.unicode[l-m,k]) > 1000){
-								anchored.Insert (0,int.Parse (Board.unicode[l-m,k]));
-								//Debug.Log("Anchored");
-								//printlist(anchored,anchored.Count);
+							if(int.TryParse(Board.unicode[l-m,k],out faltu)){
+								if(int.Parse (Board.unicode[l-m,k]) > 1000){
+									anchored.Insert (0,int.Parse (Board.unicode[l-m,k]));
+									for (int j = 1; j<256; j++) {
+										searchmaar = new List<int>();
+										x = j;
+										for (int i=0; i<8; i++) {
+											if(x%2 == 1)
+											{
+												searchmaar.Add (possible[i]);
+											}
+											x = x / 2;
+										}
+										if(searchmaar.Count < 5)
+											permute(searchmaar,searchmaar.Count,0,true,anchored,l,k,m,1);
+									}
+								}
+								else
+									break;
+							}
+							else{
+								anchored.Add (int.Parse (Board.unicode[l-m,k].Split(" "[0])[0]));
+								anchored.Add (int.Parse (Board.unicode[l-m,k].Split(" "[0])[1]));
 								for (int j = 1; j<256; j++) {
 									searchmaar = new List<int>();
 									x = j;
@@ -469,8 +544,6 @@ public class AI : MonoBehaviour {
 										permute(searchmaar,searchmaar.Count,0,true,anchored,l,k,m,1);
 								}
 							}
-							else
-								break;
 						}
 					}
 				}
@@ -482,11 +555,29 @@ public class AI : MonoBehaviour {
 					if(Board.unicode[l,k] == "2"){
 						anchored.Clear();
 						for(int m=1;m<4;m++){
-							//Debug.Log(Board.unicode[l-m,k]);
-							if(int.Parse (Board.unicode[l+m,k]) > 1000){
-								anchored.Add (int.Parse (Board.unicode[l+m,k]));
-								//Debug.Log("Anchored");
-								//printlist(anchored,anchored.Count);
+							if(int.TryParse(Board.unicode[l+m,k],out faltu)){
+								if(int.Parse (Board.unicode[l+m,k]) > 1000){
+									anchored.Add (int.Parse (Board.unicode[l+m,k]));
+									for (int j = 1; j<256; j++) {
+										searchmaar = new List<int>();
+										x = j;
+										for (int i=0; i<8; i++) {
+											if(x%2 == 1)
+											{
+												searchmaar.Add (possible[i]);
+											}
+											x = x / 2;
+										}
+										if(searchmaar.Count < 5)
+											permute(searchmaar,searchmaar.Count,0,true,anchored,l,k,m,2);
+									}
+								}
+								else
+									break;
+							}
+							else{
+								anchored.Add (int.Parse (Board.unicode[l+m,k].Split(" "[0])[0]));
+								anchored.Add (int.Parse (Board.unicode[l+m,k].Split(" "[0])[1]));
 								for (int j = 1; j<256; j++) {
 									searchmaar = new List<int>();
 									x = j;
@@ -501,8 +592,6 @@ public class AI : MonoBehaviour {
 										permute(searchmaar,searchmaar.Count,0,true,anchored,l,k,m,2);
 								}
 							}
-							else
-								break;
 						}
 					}
 				}
@@ -514,11 +603,31 @@ public class AI : MonoBehaviour {
 					if(Board.unicode[l,k] == "3"){
 						anchored.Clear();
 						for(int m=1;m<4;m++){
-							//Debug.Log(Board.unicode[l-m,k]);
-							if(int.Parse (Board.unicode[l,k-m]) > 1000){
-								anchored.Add (int.Parse (Board.unicode[l,k-m]));
-								//Debug.Log("Anchored");
-								//printlist(anchored,anchored.Count);
+							if(int.TryParse(Board.unicode[l,k-m], out faltu)){
+								if(int.Parse (Board.unicode[l,k-m]) > 1000){
+									anchored.Add (int.Parse (Board.unicode[l,k-m]));
+									//Debug.Log("Anchored");
+									//printlist(anchored,anchored.Count);
+									for (int j = 1; j<256; j++) {
+										searchmaar = new List<int>();
+										x = j;
+										for (int i=0; i<8; i++) {
+											if(x%2 == 1)
+											{
+												searchmaar.Add (possible[i]);
+											}
+											x = x / 2;
+										}
+										if(searchmaar.Count < 5)
+											permute(searchmaar,searchmaar.Count,0,true,anchored,l,k,m,3);
+									}
+								}
+								else
+									break;
+							}
+							else{
+								anchored.Add (int.Parse (Board.unicode[l,k-m].Split(" "[0])[0]));
+								anchored.Add (int.Parse (Board.unicode[l,k-m].Split(" "[0])[1]));
 								for (int j = 1; j<256; j++) {
 									searchmaar = new List<int>();
 									x = j;
@@ -533,8 +642,6 @@ public class AI : MonoBehaviour {
 										permute(searchmaar,searchmaar.Count,0,true,anchored,l,k,m,3);
 								}
 							}
-							else
-								break;
 						}
 					}
 				}
@@ -547,10 +654,31 @@ public class AI : MonoBehaviour {
 						anchored.Clear();
 						for(int m=1;m<4;m++){
 							//Debug.Log(Board.unicode[l-m,k]);
-							if(int.Parse (Board.unicode[l,k+m]) > 1000){
-								anchored.Add (int.Parse (Board.unicode[l,k+m]));
-								//Debug.Log("Anchored");
-								//printlist(anchored,anchored.Count);
+							if(int.TryParse(Board.unicode[l,k+m], out faltu)){
+								if(int.Parse (Board.unicode[l,k+m]) > 1000){
+									anchored.Add (int.Parse (Board.unicode[l,k+m]));
+									//Debug.Log("Anchored");
+									//printlist(anchored,anchored.Count);
+									for (int j = 1; j<256; j++) {
+										searchmaar = new List<int>();
+										x = j;
+										for (int i=0; i<8; i++) {
+											if(x%2 == 1)
+											{
+												searchmaar.Add (possible[i]);
+											}
+											x = x / 2;
+										}
+										if(searchmaar.Count < 5)
+											permute(searchmaar,searchmaar.Count,0,true,anchored,l,k,m,4);
+									}
+								}
+								else
+									break;
+							}
+							else{
+								anchored.Add (int.Parse (Board.unicode[l,k+m].Split(" "[0])[0]));
+								anchored.Add (int.Parse (Board.unicode[l,k+m].Split(" "[0])[1]));
 								for (int j = 1; j<256; j++) {
 									searchmaar = new List<int>();
 									x = j;
@@ -565,51 +693,51 @@ public class AI : MonoBehaviour {
 										permute(searchmaar,searchmaar.Count,0,true,anchored,l,k,m,4);
 								}
 							}
-							else
-								break;
 						}
 					}
 				}
 			}
 
-			placethis = choose(listlist);
-			/*placethis.Add (2354);
-			placethis.Add (2310);
-			placethis.Add (2349);
-			placethis.Add (2);
-			placethis.Add (10);
-			placethis.Add (4);
-			placethis.Add (5);
-			placethis.Add (4);*/
-			anx = placethis[placethis.Count-3];
-			any = placethis[placethis.Count-2];
-			placedir = placethis[placethis.Count-1];
-			if(placedir == 2){
-				for(int i=1;i<placethis.Count-5;i++){
-					if(placethis[i] < 2325)
-						Debug.Log("Hi");
-						anx++;
+			if(listlist.Count != 0){
+				placethis = choose(listlist);
+				/*placethis.Add (2354);
+				placethis.Add (2310);
+				placethis.Add (2349);
+				placethis.Add (2);
+				placethis.Add (10);
+				placethis.Add (4);
+				placethis.Add (5);
+				placethis.Add (4);*/
+				anx = placethis[placethis.Count-3];
+				any = placethis[placethis.Count-2];
+				placedir = placethis[placethis.Count-1];
+				Debug.Log(anx + " " + any + " " + placedir);
+				if(placedir == 2){
+					for(int i=1;i<placethis.Count-5;i++){
+						if(placethis[i] < 2325 && placethis[i] > 1000)
+							anx++;
+					}
 				}
-			}
-			if(placedir == 4){
-				for(int i=1;i<placethis.Count-5;i++){
-					if(placethis[i] < 2325)
-						Debug.Log("Hi");
-						any++;
+				if(placedir == 4){
+					for(int i=1;i<placethis.Count-5;i++){
+						if(placethis[i] < 2325 && placethis[i] > 1000)
+							any++;
+					}
 				}
-			}
 
-			Debug.Log(anx + " " + any + " " + placedir);
+				Debug.Log(anx + " " + any + " " + placedir);
 
-			templachere.transform.position = new Vector3(plachere.position.x + (anx * (2 * Board.sizeTile)), plachere.position.y - (any * (2 * Board.sizeTile)), 0);
-			if(placedir == 2){
-				templachere.position = new Vector3(templachere.position.x - ((placethis.Count-6) * (2 * Board.sizeTile)),templachere.position.y,0);
+				templachere.transform.position = new Vector3(plachere.position.x + (anx * (2 * Board.sizeTile)), plachere.position.y - (any * (2 * Board.sizeTile)), 0);
+				if(placedir == 2){
+					templachere.position = new Vector3(templachere.position.x - ((placethis.Count-6) * (2 * Board.sizeTile)),templachere.position.y,0);
+				}
+				else if(placedir == 4){
+					templachere.position = new Vector3(templachere.position.x,templachere.position.y + ((placethis.Count-6) * (2 * Board.sizeTile)),0);
+				}
+				printlist(placethis, placethis.Count);
+				placekar(placethis,placedir);
+				Score.Score2 += placethis[placethis.Count-5];
 			}
-			else if(placedir == 4){
-				templachere.position = new Vector3(templachere.position.x,templachere.position.y + ((placethis.Count-6) * (2 * Board.sizeTile)),0);
-			}
-			placekar(placethis,placedir);
-			Score.Score2 += placethis[placethis.Count-5];
 			Chance.accepted = true;
 			Chancescript.GetComponent<Chance>().OnClick();
 			bankscript.GetComponent<bank>().OnClick();
