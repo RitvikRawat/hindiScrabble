@@ -8,19 +8,24 @@ public class AI : MonoBehaviour {
 	public static string words;
 	public List<string> wor;
 	public Transform plachere,templachere;
+	public Vector3 tempos;
 	public List<int> searchmaar;
 	public static List<int> per;
+	public Dictionary<int,int> matra = new Dictionary<int, int>();
 	public int valid;
-	public List<GameObject> Onrack = new List<GameObject>();
+	public List<GameObject> Onrack;// = new List<GameObject>();
+	public List<GameObject> Onbrd = new List<GameObject>();
 	public string t;
 	public GameObject Chancescript,bankscript;
 	public List<int> anchored;
 	public int anx,any;
+	public int uni;
 	public int lt,rt,up,dn;
 	public int x, c = 0;
 	public int placedir = 0;
 	public List<List<int>> listlist;
 	public List<int> placethis = new List<int> ();
+	public GameObject tempvyan;
 	// Use this for initialization
 
 	public void printlist(List<int> pr, int n){
@@ -88,11 +93,24 @@ public class AI : MonoBehaviour {
 				if(dir == 1 || dir == 3){
 					tosearch = new List<int>(toadd);
 					for(int i=0;i<per.Count;i++){
-						tosearch.Add (per[i]);
+						if(per[i] < 2325 && per[i] >= 2310)
+							tosearch.Add (per[i] + 56);
+						else if(per[i] == 2309)
+							tosearch.Add (2381);
+						else
+							tosearch.Add (per[i]);
 					}
 				}
 				else if(dir == 2 || dir == 4){
-					tosearch = new List<int>(per);
+					tosearch = new List<int>();
+					for(int i=0;i<per.Count;i++){
+						if(per[i] < 2325 && per[i] >= 2310)
+							tosearch.Add (per[i] + 56);
+						else if(per[i] == 2309)
+							tosearch.Add (2381);
+						else
+							tosearch.Add (per[i]);
+					}
 					for(int i=0;i<toadd.Count;i++){
 						tosearch.Add (toadd[i]);
 					}
@@ -197,9 +215,8 @@ public class AI : MonoBehaviour {
 					templist.Add(x);
 					templist.Add(y);
 					templist.Add(dir);
-					listlist.Add(templist);
-					//placedir = dir;
-					//printlist(tosearch,tosearch.Count);
+					if(!((dir == 1 || dir == 3) && per[0]<2325))
+						listlist.Add(templist);
 				}
 			}
 		}
@@ -207,26 +224,60 @@ public class AI : MonoBehaviour {
 
 	void placekar(List<int> placekrna, int dir){
 		int blocks = 0;
+		Onbrd.Clear ();
 		for (int i=0; i<placekrna.Count-4; i++) {
 			for(int j = 0; j<Onrack.Count; j++){
 				if(Onrack[j].GetComponentInChildren<Point> ().Unicode != "2309 2306" && Onrack[j].GetComponentInChildren<Point> ().Unicode != "2309 2307"){
 					if(placekrna[i] == int.Parse(Onrack[j].GetComponentInChildren<Point> ().Unicode)){
-						if(placekrna[i]<2325 && i!=0){
+						if(placekrna[i]<2325 && i != 0){
 							blocks--;
 						}
 						if(dir == 1 || dir == 2){
-							Onrack[j].transform.position = new Vector3(templachere.position.x + (blocks * (2 * Board.sizeTile)), templachere.position.y, 0);
-							Onrack[j].GetComponent<place>().onboard = true;
-							Board.unicode[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().Unicode;
-							Board.matrix[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().pt;
+							if(placekrna[i]>=2325){
+								Onrack[j].transform.position = new Vector3(templachere.position.x + (blocks * (2 * Board.sizeTile)), templachere.position.y, 0);
+								Onrack[j].GetComponent<place>().onboard = true;
+								Board.unicode[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().Unicode;
+								Board.matrix[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().pt;
+							}
+							else{
+								Onrack[j].GetComponent<place>().onboard = true;
+								//Onrack[j].transform.position = new Vector3(0,0,-5);
+								uni = int.Parse(Onrack[j].GetComponentInChildren<Point>().Unicode);
+								uni = (uni % 100) - 6;
+								tempos = new Vector3(templachere.position.x + (blocks * (2 * Board.sizeTile)), templachere.position.y, 0);
+								Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+								if(Onbrd.Count != 0){
+									tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
+									Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+									Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+								}else
+									Onrack[j].transform.position = tempos;
+							}
 						}
 						else if(dir == 3 || dir == 4){
-							Onrack[j].transform.position = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
-							Onrack[j].GetComponent<place>().onboard = true;
-							Board.unicode[anx,any+blocks] = Onrack[j].GetComponentInChildren<Point>().Unicode;
-							Board.matrix[anx,any + blocks] = Onrack[j].GetComponentInChildren<Point>().pt;
+							if(placekrna[i]>=2325){
+								Onrack[j].transform.position = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
+								Onrack[j].GetComponent<place>().onboard = true;
+								Board.unicode[anx,any+blocks] = Onrack[j].GetComponentInChildren<Point>().Unicode;
+								Board.matrix[anx,any + blocks] = Onrack[j].GetComponentInChildren<Point>().pt;
+							}
+							else{
+								Onrack[j].GetComponent<place>().onboard = true;
+								//Onrack[j].transform.position = new Vector3(0,0,-5);
+								uni = int.Parse(Onrack[j].GetComponentInChildren<Point>().Unicode);
+								uni = (uni % 100) - 6;
+								tempos = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
+								Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+								if(Onbrd.Count != 0){
+									tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
+									Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+									Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+								}else
+									Onrack[j].transform.position = tempos;
+							}
 						}
 						blocks++;
+						Onbrd.Add(Onrack[j]);
 						Onrack.RemoveAt(j);
 						break;
 					}
@@ -236,16 +287,32 @@ public class AI : MonoBehaviour {
 						if(i!=0)
 							blocks--;
 						if(dir == 1 || dir == 2){
-							Onrack[j].transform.position = new Vector3(templachere.position.x + (blocks * (2 * Board.sizeTile)), templachere.position.y, 0);
 							Onrack[j].GetComponent<place>().onboard = true;
-							Board.unicode[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().Unicode;
-							Board.matrix[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().pt;
+							//Onrack[j].transform.position = new Vector3(0,0,-5);
+							uni = 2306;
+							uni = (uni % 100) - 6;
+							tempos = new Vector3(templachere.position.x + (blocks * (2 * Board.sizeTile)), templachere.position.y, 0);
+							Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+							if(Onbrd.Count != 0){
+								tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
+								Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+								Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+							}else
+								Onrack[j].transform.position = tempos;
 						}
 						else if(dir == 3 || dir == 4){
-							Onrack[j].transform.position = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
 							Onrack[j].GetComponent<place>().onboard = true;
-							Board.unicode[anx,any+blocks] = Onrack[j].GetComponentInChildren<Point>().Unicode;
-							Board.matrix[anx,any+blocks] = Onrack[j].GetComponentInChildren<Point>().pt;
+							//Onrack[j].transform.position = new Vector3(0,0,-5);
+							uni = 2306;
+							uni = (uni % 100) - 6;
+							tempos = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
+							Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+							if(Onbrd.Count != 0){
+								tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
+								Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+								Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+							}else
+								Onrack[j].transform.position = tempos;
 						}
 						blocks++;
 						Onrack.RemoveAt(j);
@@ -257,16 +324,32 @@ public class AI : MonoBehaviour {
 						if(i!=0)
 							blocks--;
 						if(dir == 1 || dir == 2){
-							Onrack[j].transform.position = new Vector3(templachere.position.x + (blocks * (2 * Board.sizeTile)), templachere.position.y, 0);
 							Onrack[j].GetComponent<place>().onboard = true;
-							Board.unicode[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().Unicode;
-							Board.matrix[anx + blocks,any] = Onrack[j].GetComponentInChildren<Point>().pt;
+							//Onrack[j].transform.position = new Vector3(0,0,-5);
+							uni = 2307;
+							uni = (uni % 100) - 6;
+							tempos = new Vector3(templachere.position.x + (blocks * (2 * Board.sizeTile)), templachere.position.y, 0);
+							Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+							if(Onbrd.Count != 0){
+								tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
+								Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+								Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+							}else
+								Onrack[j].transform.position = tempos;
 						}
 						else if(dir == 3 || dir == 4){
-							Onrack[j].transform.position = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
 							Onrack[j].GetComponent<place>().onboard = true;
-							Board.unicode[anx,any+blocks] = Onrack[j].GetComponentInChildren<Point>().Unicode;
-							Board.matrix[anx,any+blocks] = Onrack[j].GetComponentInChildren<Point>().pt;
+							//Onrack[j].transform.position = new Vector3(0,0,-5);
+							uni = 2307;
+							uni = (uni % 100) - 6;
+							tempos = new Vector3(templachere.position.x, templachere.position.y - (blocks * (2 * Board.sizeTile)), 0);
+							Board.matrix[anx + blocks,any] += Onrack[j].GetComponentInChildren<Point>().pt;
+							if(Onbrd.Count != 0){
+								tempvyan = GameObject.Instantiate(Onbrd[Onbrd.Count-1].GetComponent<intersection>().arr[uni],tempos,Quaternion.identity) as GameObject;
+								Onbrd[Onbrd.Count-1].transform.position = new Vector3(0,3,5);
+								Board.unicode[anx + blocks,any] = tempvyan.GetComponentInChildren<Point>().Unicode;
+							}else
+								Onrack[j].transform.position = tempos;
 						}
 						blocks++;
 						Onrack.RemoveAt(j);
@@ -490,21 +573,31 @@ public class AI : MonoBehaviour {
 			}
 
 			placethis = choose(listlist);
+			/*placethis.Add (2354);
+			placethis.Add (2310);
+			placethis.Add (2349);
+			placethis.Add (2);
+			placethis.Add (10);
+			placethis.Add (4);
+			placethis.Add (5);
+			placethis.Add (4);*/
 			anx = placethis[placethis.Count-3];
 			any = placethis[placethis.Count-2];
+			placedir = placethis[placethis.Count-1];
 			if(placedir == 2){
-				for(int i=0;i<placethis.Count-5;i++){
+				for(int i=1;i<placethis.Count-5;i++){
 					if(placethis[i] < 2325)
+						Debug.Log("Hi");
 						anx++;
 				}
 			}
 			if(placedir == 4){
-				for(int i=0;i<placethis.Count-5;i++){
+				for(int i=1;i<placethis.Count-5;i++){
 					if(placethis[i] < 2325)
+						Debug.Log("Hi");
 						any++;
 				}
 			}
-			placedir = placethis[placethis.Count-1];
 
 			Debug.Log(anx + " " + any + " " + placedir);
 
