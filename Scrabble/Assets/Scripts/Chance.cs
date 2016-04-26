@@ -77,7 +77,7 @@ public class Chance : MonoBehaviour {
 			accepted=true;
 			return;
 		}
-		int i,flag=0,f=0;
+		int i,flag=0,f=0,sc1=0;
 		Vector2 ind = getIndex (list [0]);
 		int line1 = (int)ind.x;
 		int line2 = (int)ind.y;
@@ -113,6 +113,21 @@ public class Chance : MonoBehaviour {
 				flag = 0;
 			else 
 				return;
+			if(flag==1 && (int)ind.y < 15 && Board.matrix [(int)ind.x, (int)(ind.y) + 1] != 0){
+				for(i=(int)(ind.y)+2;i<16;i++)
+					if(Board.matrix[(int)ind.x, i]==0)
+						break;
+				i=Matching.match((int)ind.x,(int)ind.x,(int)ind.y,i-1,1);
+				sc1=Score.score((int)ind.x,(int)ind.x,(int)ind.y,(int)(ind.y)+i);
+			}
+			else if(flag==1 && (int)ind.y > 0 && Board.matrix [(int)ind.x, (int)(ind.y) - 1] != 0){
+				for(i=(int)(ind.y)-2;i>=0;i--)
+					if(Board.matrix[(int)ind.x, i]==0)
+						break;
+				i=Matching.match((int)ind.x,(int)ind.x,i+1,(int)ind.y,0);
+				sc1=Score.score((int)ind.x,(int)ind.x,(int)(ind.y)-i,(int)ind.y);
+			}
+
 		}
 		Debug.Log ("flag= " + flag);
 		//1 for horizontal 0 for vertical
@@ -147,6 +162,8 @@ public class Chance : MonoBehaviour {
 			else
 				return;
 			currsc=Score.score(line2,line1,(int)(ind.y),(int)ind.y);
+			if(sc1>currsc)
+				currsc=sc1;	
 		}
 		else{
 			line1=line2+1;
