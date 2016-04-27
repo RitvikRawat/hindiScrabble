@@ -46,7 +46,7 @@ public class bank : MonoBehaviour {
 		
 		Debug.Log ("=========>>>>>>> p1 rack made");
 		
-		//This loop is used to generate the rack for player 1.
+		//This loop is used to generate the rack for player 2.
 		//It randomly picks 8 tiles from the bank of tiles.
 		for (i=0; i<8; i++) {
 			temp = Random.Range (0, bankNo);
@@ -62,6 +62,9 @@ public class bank : MonoBehaviour {
 		
 		Debug.Log ("=========>>>>>>> p2 rack made");	
 	}
+
+	//Exchange function exchanges when player is stuck and wants his tiles to be exchanged
+	//It causes a penalty of 10 score
 	public void exchange(){
 		if (Chance.chance == 1) {
 			for (i=0; i<8; i++) {
@@ -75,8 +78,9 @@ public class bank : MonoBehaviour {
 				P1curr [i].GetComponent<place> ().initialpos = SV [i].position;
 				SwarVyanjan.RemoveAt (temp);
 				bankNo--;
-				//P1curr[i] =(GameObject) Instantiate (SwarVyanjan[temp],SV[i].position,Quaternion.identity);
 			}
+			Score.Score1-=10;
+
 		} else {
 			for (i=0; i<8; i++) {
 				Destroy (P2curr [i]);
@@ -90,6 +94,7 @@ public class bank : MonoBehaviour {
 				SwarVyanjan.RemoveAt (temp);
 				bankNo--;
 			}
+			Score.Score2-=10;
 		}
 	}
 	
@@ -172,10 +177,7 @@ public class bank : MonoBehaviour {
 					P2curr[i]=P2[i];
 				}
 			}
-			Chance.accepted=false;
-			
+			Chance.accepted=false;	
 		}
-		
-		
 	}
 }
