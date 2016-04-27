@@ -1,4 +1,4 @@
-C# script to change the sounds of game menu.
+//C# script to change the sounds of game menu.
 using UnityEngine;
 using System.Collections;
  

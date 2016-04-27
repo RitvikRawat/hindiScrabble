@@ -15,8 +15,8 @@ public class LangChng : MonoBehaviour {
 	public GameObject go1b1;
 	public GameObject go1b2;
 	public GameObject go1b3;
-	public GameObject go1b4;
-	public GameObject go1b5;
+	//public GameObject go1b4;
+	//public GameObject go1b5;
 
 	public GameObject go2;
 	public GameObject go2b1;
@@ -28,17 +28,17 @@ public class LangChng : MonoBehaviour {
 	public GameObject go3b1;
 	public GameObject go3b2;
 	public GameObject go3b3;
-	public GameObject go3b4;
+	//public GameObject go3b4;
 	public GameObject go3b5;
 	public GameObject go3b6;
-	public GameObject go3b7;
+	//public GameObject go3b7;
 
 	public GameObject go4;
-	public GameObject go4b1;
+	//public GameObject go4b1;
 
 	public GameObject go5b1;
 	public GameObject go5b2;
-	public GameObject go5b3;
+	//public GameObject go5b3;
 	//public Button but;
 
 	public Font hindFont;
@@ -67,11 +67,11 @@ public class LangChng : MonoBehaviour {
 		go1b3.GetComponentInChildren<Text>().text = "mPp Ldskj";
 		go1b3.GetComponentInChildren<Text>().font = hindFont;
 
-		go1b4.GetComponentInChildren<Text>().text = "fodYi";
-		go1b4.GetComponentInChildren<Text>().font = hindFont;
+		//go1b4.GetComponentInChildren<Text>().text = "fodYi";
+		//go1b4.GetComponentInChildren<Text>().font = hindFont;
 
-		go1b5.GetComponentInChildren<Text>().text = "ckgj";
-		go1b5.GetComponentInChildren<Text>().font = hindFont;
+		//go1b5.GetComponentInChildren<Text>().text = "ckgj";
+		//go1b5.GetComponentInChildren<Text>().font = hindFont;
 		//go1.SetActive(false);
 		go1.SetActive(false);
 
@@ -102,8 +102,8 @@ public class LangChng : MonoBehaviour {
 		go3b3.GetComponentInChildren<Text>().text = "ckjs es";
 		go3b3.GetComponentInChildren<Text>().font = hindFont;
 
-		go3b4.GetComponentInChildren<Text>().text = "vkokt";
-		go3b4.GetComponentInChildren<Text>().font = hindFont;
+		//go3b4.GetComponentInChildren<Text>().text = "vkokt";
+		//go3b4.GetComponentInChildren<Text>().font = hindFont;
 
 		go3b5.GetComponentInChildren<Text>().text = "xkuk";
 		go3b5.GetComponentInChildren<Text>().font = hindFont;
@@ -111,15 +111,15 @@ public class LangChng : MonoBehaviour {
 		go3b6.GetComponentInChildren<Text>().text = "Hkk'kk";
 		go3b6.GetComponentInChildren<Text>().font = hindFont;
 
-		go3b7.GetComponentInChildren<Text>().text = "ihNs";
-		go3b7.GetComponentInChildren<Text>().font = hindFont;
+		//go3b7.GetComponentInChildren<Text>().text = "ihNs";
+		//go3b7.GetComponentInChildren<Text>().font = hindFont;
 		//go1.SetActive(false);
 		go3.SetActive(false);
 
 		go4.SetActive (true);
 		//go1.SetActive (true);
-		go4b1.GetComponentInChildren<Text>().text = "ihNs";
-		go4b1.GetComponentInChildren<Text>().font = hindFont;
+		//go4b1.GetComponentInChildren<Text>().text = "ihNs";
+		//go4b1.GetComponentInChildren<Text>().font = hindFont;
 		//go1.SetActive(false);
 		go4.SetActive(false);
 
@@ -131,7 +131,7 @@ public class LangChng : MonoBehaviour {
 		go5b2.GetComponentInChildren<Text>().text = "fgUnh";
 		go5b2.GetComponentInChildren<Text>().font = hindFont;
 	
-		go5b3.GetComponentInChildren<Text>().text = "ihNs";
-		go5b3.GetComponentInChildren<Text>().font = hindFont;
+		//go5b3.GetComponentInChildren<Text>().text = "ihNs";
+		//go5b3.GetComponentInChildren<Text>().font = hindFont;
 	}
 }

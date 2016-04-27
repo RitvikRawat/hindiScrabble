@@ -1,5 +1,4 @@
-//C# script to jump from one scene to the other.
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class SceneChange : MonoBehaviour {

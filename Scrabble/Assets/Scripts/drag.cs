@@ -10,7 +10,7 @@ public class drag : MonoBehaviour {
 	private Vector3 offset;
 	public void OnMouseDown() 
 	{
-		Debug.Log (transform.parent.tag);
+		Debug.Log (gameObject.tag);
 		if (gameObject.tag!="mixed" && gameObject.GetComponent<place> ().onboard != true)
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 	}
