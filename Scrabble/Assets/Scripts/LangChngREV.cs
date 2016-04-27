@@ -1,3 +1,7 @@
+//This script changes the game menu back into english to 
+//allow a user of english language to help him navigate his way 
+//and start the game
+
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
@@ -47,6 +51,8 @@ public class LangChngREV : MonoBehaviour {
 
 	public void onClick ()
 	{
+
+//Each gameObject is set into english.
 		go1.SetActive (true);
 		//go1.SetActive (true);
 		go1b1.GetComponentInChildren<Text>().text = "Vs CPU";
