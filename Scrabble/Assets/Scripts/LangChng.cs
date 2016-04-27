@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+//This script changes the game menu into hindi to allow
+//a user of hindi language to help him navigate his way 
+//and start the game
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -50,6 +54,8 @@ public class LangChng : MonoBehaviour {
 
 	public void onClick ()
 	{
+
+//Each gameObject is set into hindi.
 		go1.SetActive (true);
 		//go1.SetActive (true);
 		go1b1.GetComponentInChildren<Text>().text = "cuke +lxud";
