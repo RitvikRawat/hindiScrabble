@@ -70,7 +70,8 @@
      
 # Dependencies
 
-   Dependencies are listed in wiki page of the project.
+Dependencies are listed in wiki page of the project.
+
 ---
 # Installation 
     
